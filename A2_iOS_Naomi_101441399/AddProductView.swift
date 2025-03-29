@@ -5,7 +5,6 @@
 //  Created by usr on 2025-03-28.
 //
 
-
 import SwiftUI
 import CoreData
 
@@ -75,7 +74,8 @@ struct AddProductView: View {
             }
             .background(backgroundColor.edgesIgnoringSafeArea(.all))
             .navigationBarItems(trailing: Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
+                Text("Cancel")
+                    .foregroundColor(.black) // Change color to black here
             })
         }
         .alert(isPresented: $showAlert) {
