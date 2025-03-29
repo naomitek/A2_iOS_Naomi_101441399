@@ -9,12 +9,11 @@ import SwiftUI
 import CoreData
 
 struct ProductListView: View {
-    let products: [Product]
     @Environment(\.managedObjectContext) private var viewContext
-    @State private var showingDeleteAlert = false
-    @State private var productToDelete: Product?
+    let products: [Product]
 
-    let backgroundColor = Color(red: 0.6, green: 0.8, blue: 1.0)
+    let backgroundColor = Color(red: 0.8, green: 0.9, blue: 1.0) 
+    let primaryTextColor = Color.black
 
     var body: some View {
         NavigationView {
@@ -23,17 +22,21 @@ struct ProductListView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(product.name ?? "Unknown")
                             .font(.headline)
-                            .foregroundColor(Color(red: 0.1, green: 0.2, blue: 0.4))
+                            .foregroundColor(primaryTextColor)
+
                         Text(product.productDescription ?? "No Description")
                             .font(.subheadline)
                             .foregroundColor(.gray)
+
+                        Text("Price: $\(product.price, specifier: "%.2f")")
+                            .font(.subheadline)
+                            .foregroundColor(.blue)
                     }
                     .padding(.vertical, 8)
-                    .listRowBackground(Color.clear)
+                    .listRowBackground(Color(UIColor.systemBackground))
                     .contextMenu {
                         Button(action: {
-                            productToDelete = product
-                            showingDeleteAlert = true
+                            deleteProduct(product: product)
                         }) {
                             Label("Delete", systemImage: "trash")
                         }
@@ -42,18 +45,6 @@ struct ProductListView: View {
             }
             .navigationTitle("Product List")
             .background(backgroundColor.edgesIgnoringSafeArea(.all))
-            .alert(isPresented: $showingDeleteAlert) {
-                Alert(
-                    title: Text("Delete Product?"),
-                    message: Text("Are you sure you want to delete this product?"),
-                    primaryButton: .destructive(Text("Delete")) {
-                        if let product = productToDelete {
-                            deleteProduct(product: product)
-                        }
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
         }
     }
 
