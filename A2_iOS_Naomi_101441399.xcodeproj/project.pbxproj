@@ -110,15 +110,15 @@
 			children = (
 				12FD6CDC2D97853C007CC2FE /* A2_iOS_Naomi_101441399App.swift */,
 				12FD6D0B2D9786E7007CC2FE /* ProductDetailView.swift */,
+				12470EFB2D978BA900C97170 /* AddProductView.swift */,
+				12470EFD2D978C0800C97170 /* ProductListView.swift */,
+				12470EF92D978A9900C97170 /* EditProductView.swift */,
+				12470EFF2D978C8800C97170 /*  CustomTextField.swift */,
 				12FD6CDE2D97853C007CC2FE /* ContentView.swift */,
 				12FD6CE02D97853E007CC2FE /* Assets.xcassets */,
 				12FD6CE52D97853E007CC2FE /* Persistence.swift */,
 				12FD6CE72D97853E007CC2FE /* A2_iOS_Naomi_101441399.xcdatamodeld */,
 				12FD6CE22D97853E007CC2FE /* Preview Content */,
-				12470EF92D978A9900C97170 /* EditProductView.swift */,
-				12470EFB2D978BA900C97170 /* AddProductView.swift */,
-				12470EFD2D978C0800C97170 /* ProductListView.swift */,
-				12470EFF2D978C8800C97170 /*  CustomTextField.swift */,
 			);
 			path = A2_iOS_Naomi_101441399;
 			sourceTree = "<group>";
