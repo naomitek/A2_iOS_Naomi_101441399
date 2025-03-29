@@ -5,42 +5,34 @@
 //  Created by usr on 2025-03-28.
 //
 import SwiftUI
-
 struct CustomTextField: View {
-    let title: String
+    var title: String
     @Binding var text: String
     var keyboardType: UIKeyboardType = .default
     var isMultiline: Bool = false
-    var primaryColor: Color = .primary
-    var secondaryColor: Color = Color(UIColor.systemBackground)
+    var primaryColor: Color
+    var secondaryColor: Color
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.subheadline)
+                .fontWeight(.medium)
                 .foregroundColor(primaryColor)
 
             if isMultiline {
-                TextEditor(text: $text)
-                    .padding(8)
+                TextEditor(text: $text) // Correctly using TextEditor
+                    .padding(12)
                     .background(secondaryColor)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
+                    .cornerRadius(10)
+                    .frame(minHeight: 120) // Ensure a reasonable minHeight
             } else {
-                TextField("", text: $text)
-                    .padding(8)
+                TextField(title, text: $text)
+                    .padding(12)
                     .background(secondaryColor)
-                    .cornerRadius(8)
+                    .cornerRadius(10)
                     .keyboardType(keyboardType)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
             }
         }
     }
 }
-
