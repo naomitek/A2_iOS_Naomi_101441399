@@ -5,6 +5,7 @@
 //  Created by usr on 2025-03-28.
 //
 
+
 import SwiftUI
 import CoreData
 
@@ -49,6 +50,7 @@ struct AddProductView: View {
                         }
 
                         CustomTextField(title: "Description", text: $description, isMultiline: true, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
+                        // Removed: CustomTextField(title: "Image Name", text: $imageName, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
                     }
                     .padding(22)
                     .background(Color(UIColor.systemBackground))
