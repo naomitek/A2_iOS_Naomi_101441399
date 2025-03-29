@@ -8,199 +8,106 @@
 import SwiftUI
 import CoreData
 
-
-
-struct ContentView: View {
+struct EditProductView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Product.timestamp, ascending: true)], animation: .default)
-    private var products: FetchedResults<Product>
+    @Environment(\.presentationMode) var presentationMode
 
-    @State private var selectedProduct: Product?
-    @State private var searchText = ""
-    @State private var isAddingProduct = false
-    @State private var showProductList = false
-    @State private var showingAlert = false
+    @Binding var product: Product
+
+    @State private var name = ""
+    @State private var provider = ""
+    @State private var price = ""
+    @State private var description = ""
+    @State private var isPriceValid = true
+    @State private var showAlert = false
     @State private var alertMessage = ""
-    @State private var isEditingProduct = false
 
     let backgroundColor = Color(red: 0.6, green: 0.8, blue: 1.0)
-    let deleteButtonColor = Color.red
-    let editButtonColor = Color.white
-
-    var filteredProducts: [Product] {
-        if searchText.isEmpty {
-            return Array(products)
-        } else {
-            return products.filter { product in
-                product.name?.localizedCaseInsensitiveContains(searchText) ?? false ||
-                product.productDescription?.localizedCaseInsensitiveContains(searchText) ?? false
-            }
-        }
-    }
 
     var body: some View {
         NavigationView {
-            VStack {
-                if let product = selectedProduct {
-                    VStack {
-                        ProductDetailView(product: product)
-                        HStack {
-                            Button(action: {
-                                deleteProduct(product: product)
-                            }) {
-                                Text("Delete")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(deleteButtonColor)
-                                    .cornerRadius(8)
-                            }
+            ScrollView {
+                VStack(spacing: 20) {
+                    Text("Edit Product")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(red: 0.1, green: 0.2, blue: 0.4))
+                        .padding(.top, 30)
 
-                            Button(action: {
-                                isEditingProduct = true
-                            }) {
-                                Text("Edit")
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .background(editButtonColor)
-                                    .cornerRadius(8)
+                    VStack(spacing: 18) {
+                        CustomTextField(title: "Product Name", text: $name, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
+                        CustomTextField(title: "Provider", text: $provider, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
+                        CustomTextField(title: "Price", text: $price, keyboardType: .decimalPad, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
+                            .onChange(of: price) { newValue in
+                                isPriceValid = Double(newValue) != nil && !newValue.isEmpty
                             }
-                        }
-                    }
-                } else if !filteredProducts.isEmpty {
-                    VStack {
-                        ProductDetailView(product: filteredProducts.first!)
-                        HStack {
-                            Button(action: {
-                                deleteProduct(product: filteredProducts.first!)
-                            }) {
-                                Text("Delete")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(deleteButtonColor)
-                                    .cornerRadius(8)
-                            }
+                            .foregroundColor(isPriceValid ? Color(red: 0.1, green: 0.2, blue: 0.4) : Color(red: 0.9, green: 0.3, blue: 0.3))
 
-                            Button(action: {
-                                isEditingProduct = true
-                            }) {
-                                Text("Edit")
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .background(editButtonColor)
-                                    .cornerRadius(8)
-                            }
-                        }
-                    }
-                } else {
-                    VStack {
-                        Image(systemName: "tray.fill")
-                            .font(.system(size: 60))
-                            .foregroundColor(.gray)
-                        Text("No products found.")
-                            .foregroundColor(.gray)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(backgroundColor)
-                }
-
-                HStack {
-                    if !filteredProducts.isEmpty {
-                        Button(action: {
-                            if let currentIndex = filteredProducts.firstIndex(of: selectedProduct ?? filteredProducts.first!), currentIndex > 0 {
-                                selectedProduct = filteredProducts[currentIndex - 1]
-                            } else {
-                                selectedProduct = filteredProducts.last!
-                            }
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
-                        }
-                        .disabled(filteredProducts.firstIndex(of: selectedProduct ?? filteredProducts.first!) == 0)
-
-                        Spacer()
-
-                        Button(action: {
-                            if let currentIndex = filteredProducts.firstIndex(of: selectedProduct ?? filteredProducts.first!), currentIndex < filteredProducts.count - 1 {
-                                selectedProduct = filteredProducts[currentIndex + 1]
-                            } else {
-                                selectedProduct = filteredProducts.first!
-                            }
-                        }) {
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.white)
-                        }
-                        .disabled(filteredProducts.firstIndex(of: selectedProduct ?? filteredProducts.first!) == filteredProducts.count - 1)
-                    }
-                }
-                .padding()
-
-                HStack {
-                    TextField(products.isEmpty ? "Not Available" : "Search Products", text: $searchText)
-                        .padding(8)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        .disabled(products.isEmpty)
-                        .foregroundColor(products.isEmpty ? .gray : .primary)
-                        .onChange(of: searchText) { _ in
-                            selectedProduct = filteredProducts.first
+                        if !isPriceValid && !price.isEmpty {
+                            Text("Please enter a valid price.")
+                                .foregroundColor(Color(red: 0.9, green: 0.3, blue: 0.3))
+                                .font(.caption)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
 
-                    Button(action: {
-                        showProductList = true
-                    }) {
-                        Image(systemName: "list.bullet")
-                            .foregroundColor(.black)
+                        CustomTextField(title: "Description", text: $description, isMultiline: true, primaryColor: Color(red: 0.1, green: 0.2, blue: 0.4), secondaryColor: Color(UIColor.systemBackground))
                     }
-                    .padding(.leading, 8)
-                    .disabled(products.isEmpty)
+                    .padding(22)
+                    .background(Color(UIColor.systemBackground))
+                    .cornerRadius(16)
+                    .shadow(color: Color.black.opacity(0.08), radius: 12, x: 0, y: 6)
 
-                    Button(action: {
-                        isAddingProduct = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(.black)
+                    Button(action: editProduct) {
+                        Text("Save Changes")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(16)
+                            .background(name.isEmpty || provider.isEmpty || price.isEmpty || !isPriceValid ? Color.gray : Color(red: 0.3, green: 0.7, blue: 0.9))
+                            .cornerRadius(12)
                     }
-                    .padding(.leading, 8)
+                    .disabled(name.isEmpty || provider.isEmpty || price.isEmpty || !isPriceValid)
+
+                    Spacer()
                 }
-                .padding()
-            }
-            .padding(.bottom)
-            .navigationTitle("Products")
-            .sheet(isPresented: $isAddingProduct) {
-                AddProductView()
-            }
-            .sheet(isPresented: $showProductList) {
-                ProductListView(products: filteredProducts)
-            }
-            .sheet(isPresented: $isEditingProduct) {
-                if let product = selectedProduct {
-                    EditProductView(product: Binding(
-                        get: { product },
-                        set: { selectedProduct = $0 }
-                    ))
-                }
-            }
-            .onAppear {
-                if let firstProduct = filteredProducts.first {
-                    selectedProduct = firstProduct
-                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 30)
             }
             .background(backgroundColor.edgesIgnoringSafeArea(.all))
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            .navigationBarItems(trailing: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            })
+            .onAppear {
+                name = product.name ?? ""
+                provider = product.provider ?? ""
+                price = String(product.price)
+                description = product.productDescription ?? ""
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
 
-    private func deleteProduct(product: Product) {
-        viewContext.delete(product)
+    private func editProduct() {
+        guard let priceValue = Double(price), priceValue > 0 else {
+            alertMessage = "Please enter a valid price greater than 0."
+            showAlert = true
+            return
+        }
+
+        product.name = name
+        product.provider = provider
+        product.price = priceValue
+        product.productDescription = description
+
         do {
             try viewContext.save()
+            presentationMode.wrappedValue.dismiss()
         } catch {
-            print("Failed to delete product: \(error)")
-            alertMessage = "Failed to delete product: \(error.localizedDescription)"
-            showingAlert = true
+            print("Failed to save product: \(error.localizedDescription)")
+            alertMessage = "Failed to save product: \(error.localizedDescription)"
+            showAlert = true
         }
     }
 }
