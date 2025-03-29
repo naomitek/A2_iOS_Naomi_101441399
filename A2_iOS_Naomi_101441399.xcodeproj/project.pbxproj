@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		12470EFA2D978A9900C97170 /* EditProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12470EF92D978A9900C97170 /* EditProductView.swift */; };
+		12470EFC2D978BA900C97170 /* AddProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12470EFB2D978BA900C97170 /* AddProductView.swift */; };
 		12FD6CDD2D97853C007CC2FE /* A2_iOS_Naomi_101441399App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FD6CDC2D97853C007CC2FE /* A2_iOS_Naomi_101441399App.swift */; };
 		12FD6CDF2D97853C007CC2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FD6CDE2D97853C007CC2FE /* ContentView.swift */; };
 		12FD6CE12D97853E007CC2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12FD6CE02D97853E007CC2FE /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		12470EF92D978A9900C97170 /* EditProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProductView.swift; sourceTree = "<group>"; };
+		12470EFB2D978BA900C97170 /* AddProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductView.swift; sourceTree = "<group>"; };
 		12FD6CD92D97853C007CC2FE /* A2_iOS_Naomi_101441399.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A2_iOS_Naomi_101441399.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FD6CDC2D97853C007CC2FE /* A2_iOS_Naomi_101441399App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A2_iOS_Naomi_101441399App.swift; sourceTree = "<group>"; };
 		12FD6CDE2D97853C007CC2FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				12FD6CE72D97853E007CC2FE /* A2_iOS_Naomi_101441399.xcdatamodeld */,
 				12FD6CE22D97853E007CC2FE /* Preview Content */,
 				12470EF92D978A9900C97170 /* EditProductView.swift */,
+				12470EFB2D978BA900C97170 /* AddProductView.swift */,
 			);
 			path = A2_iOS_Naomi_101441399;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 			files = (
 				12470EFA2D978A9900C97170 /* EditProductView.swift in Sources */,
 				12FD6CE62D97853E007CC2FE /* Persistence.swift in Sources */,
+				12470EFC2D978BA900C97170 /* AddProductView.swift in Sources */,
 				12FD6D0C2D9786E7007CC2FE /* ProductDetailView.swift in Sources */,
 				12FD6CDF2D97853C007CC2FE /* ContentView.swift in Sources */,
 				12FD6CE92D97853E007CC2FE /* A2_iOS_Naomi_101441399.xcdatamodeld in Sources */,
